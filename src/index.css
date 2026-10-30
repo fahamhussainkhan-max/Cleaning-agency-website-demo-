@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --color-noir-950: #07090E;
+  --color-noir-900: #0D121C;
+  --color-noir-800: #151D2C;
+  --color-noir-700: #1F2B3E;
+  --color-gold-300: #F5E6BE;
+  --color-gold-400: #E5C384;
+  --color-gold-500: #C99E52;
+  --color-gold-600: #9E7837;
+  --color-emerald-accent-400: #34D399;
+  --color-emerald-accent-500: #10B981;
+}
+
+/* Glassmorphism & Gold Styling */
+.glass-card {
+  background: rgba(18, 24, 38, 0.75);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(229, 195, 132, 0.15);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(229, 195, 132, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(201, 158, 82, 0.2);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 195, 132, 0.18);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #F5E6BE 0%, #E5C384 50%, #9E7837 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-btn {
+  background: linear-gradient(135deg, #E5C384 0%, #C99E52 100%);
+  color: #07090E;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gold-btn:hover {
+  box-shadow: 0 0 25px rgba(229, 195, 132, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Smart floating navbar transition */
+.smart-navbar {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.smart-navbar.nav-hidden {
+  transform: translateY(-130%);
+  opacity: 0;
+}
+
+.slider-handle-gold {
+  box-shadow: 0 0 22px rgba(229, 195, 132, 0.45);
+}
+
+@keyframes bounceSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 4s ease-in-out infinite;
+}

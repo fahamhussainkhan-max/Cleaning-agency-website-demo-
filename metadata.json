@@ -1,0 +1,6 @@
+{
+  "name": "SparklePro Cleaners",
+  "description": "Luxury & Deep Home Cleaning Services with instant quote calculator, before & after transformation slider, and quick reservation booking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
