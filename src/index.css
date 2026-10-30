@@ -3,24 +3,26 @@
 @theme {
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --color-noir-950: #07090E;
-  --color-noir-900: #0D121C;
-  --color-noir-800: #151D2C;
-  --color-noir-700: #1F2B3E;
+  --color-noir-950: #06080D;
+  --color-noir-900: #0B0F17;
+  --color-noir-850: #101622;
+  --color-noir-800: #161F2E;
+  --color-noir-700: #222E42;
   --color-gold-300: #F5E6BE;
   --color-gold-400: #E5C384;
   --color-gold-500: #C99E52;
   --color-gold-600: #9E7837;
   --color-emerald-accent-400: #34D399;
   --color-emerald-accent-500: #10B981;
+  --color-emerald-accent-600: #059669;
 }
 
-/* Glassmorphism & Gold Styling */
+/* Smooth Glassmorphism */
 .glass-card {
-  background: rgba(18, 24, 38, 0.75);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(229, 195, 132, 0.15);
+  background: rgba(16, 22, 34, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(229, 195, 132, 0.16);
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
@@ -33,7 +35,7 @@
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(229, 195, 132, 0.18);
+  border: 1px solid rgba(229, 195, 132, 0.2);
 }
 
 .gold-gradient {
@@ -44,7 +46,7 @@
 
 .gold-btn {
   background: linear-gradient(135deg, #E5C384 0%, #C99E52 100%);
-  color: #07090E;
+  color: #06080D;
   font-weight: 700;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -52,6 +54,10 @@
 .gold-btn:hover {
   box-shadow: 0 0 25px rgba(229, 195, 132, 0.4);
   transform: translateY(-2px);
+}
+
+.gold-btn:active {
+  transform: scale(0.97);
 }
 
 /* Smart floating navbar transition */
@@ -68,15 +74,20 @@
   box-shadow: 0 0 22px rgba(229, 195, 132, 0.45);
 }
 
-@keyframes bounceSlow {
+/* Floating Animations */
+@keyframes floatSlow {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0px);
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-8px);
   }
 }
 
-.animate-bounce-slow {
-  animation: bounceSlow 4s ease-in-out infinite;
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatSlow 6s ease-in-out infinite reverse;
 }

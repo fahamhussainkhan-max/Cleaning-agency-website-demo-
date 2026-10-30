@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SparklePro | Bespoke Architectural & Luxury Home Detailing</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            noir: {
+              950: '#06080D',
+              900: '#0B0F17',
+              850: '#101622',
+              800: '#161F2E',
+              700: '#222E42'
+            },
+            gold: {
+              300: '#F5E6BE',
+              400: '#E5C384',
+              500: '#C99E52',
+              600: '#9E7837'
+            },
+            emeraldAccent: {
+              400: '#34D399',
+              500: '#10B981',
+              600: '#059669'
+            }
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons & GSAP -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* Smooth Glassmorphism */
+    .glass-card {
+      background: rgba(16, 22, 34, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(229, 195, 132, 0.16);
+    }
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(229, 195, 132, 0.2);
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #F5E6BE 0%, #E5C384 50%, #9E7837 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gold-btn {
+      background: linear-gradient(135deg, #E5C384 0%, #C99E52 100%);
+      color: #06080D;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .gold-btn:hover {
+      box-shadow: 0 0 25px rgba(229, 195, 132, 0.4);
+      transform: translateY(-2px);
+    }
+    .gold-btn:active {
+      transform: scale(0.97);
+    }
+    /* Smart floating navbar transition */
+    #navbar {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+    #navbar.nav-hidden {
+      transform: translateY(-130%);
+      opacity: 0;
+    }
+    /* Floating Subtle Animations */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float-slow {
+      animation: floatSlow 5s ease-in-out infinite;
+    }
+    .animate-float-reverse {
+      animation: floatSlow 6s ease-in-out infinite reverse;
+    }
+  </style>
+</head>
+
+<body class="bg-noir-950 text-slate-200 font-sans selection:bg-gold-500 selection:text-noir-950 antialiased overflow-x-hidden">
+
+  <!-- Ambient Luxury Glows -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[800px] h-[450px] bg-gold-500/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-20 right-0 w-[400px] h-[400px] bg-emeraldAccent-500/5 rounded-full blur-[130px] pointer-events-none z-0"></div>
+
+  <!-- Smart Floating Navbar -->
+  <header id="navbar" class="fixed top-3 sm:top-5 left-0 right-0 z-50 px-3 sm:px-8">
+    <nav class="max-w-6xl mx-auto glass-card rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl border border-gold-500/25">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-gold-500 to-gold-300 flex items-center justify-center text-noir-950 font-bold shadow-md shadow-gold-500/20">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="text-lg font-serif tracking-wider text-white font-bold block leading-none">Sparkle<span class="gold-gradient">Pro</span></span>
+          <span class="text-[9px] uppercase tracking-widest text-gold-400 font-semibold">Premium Detailing</span>
+        </div>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-7 text-xs uppercase tracking-wider font-semibold text-slate-300">
+        <a href="#showcase" class="hover:text-gold-400 transition">Showcase</a>
+        <a href="#services" class="hover:text-gold-400 transition">Services</a>
+        <a href="#protocol" class="hover:text-gold-400 transition">Protocol</a>
+        <a href="#comparison" class="hover:text-gold-400 transition">Before & After</a>
+        <a href="#calculator" class="hover:text-gold-400 transition">Pricing</a>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="toggleModal(true)" class="gold-btn px-4 sm:px-5 py-2 rounded-xl text-xs uppercase tracking-wider font-bold">
+          Reserve Service
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="showcase" class="relative pt-32 sm:pt-40 pb-16 px-4 sm:px-8 max-w-6xl mx-auto z-10">
+    <div class="text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full glass-pill mb-6">
+        <i data-lucide="shield-check" class="w-4 h-4 text-emeraldAccent-400"></i>
+        <span class="text-[11px] uppercase tracking-widest text-gold-300 font-semibold">Ultra-Luxury Housekeeping Concierge</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-6xl font-serif text-white font-bold leading-tight mb-5">
+        Curating Absolute Perfection In <br class="hidden sm:inline">
+        <span class="gold-gradient italic">Every Luxury Living Space.</span>
+      </h1>
+
+      <p class="text-sm sm:text-base text-slate-400 font-light mb-8 max-w-xl mx-auto leading-relaxed">
+        White-glove deep sanitization, architectural marble protection, and discreet private residential detailing executed to surgical precision.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
+        <button onclick="toggleModal(true)" class="gold-btn w-full sm:w-auto px-8 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider">
+          Schedule Private Butler
+        </button>
+        <a href="#calculator" class="w-full sm:w-auto px-7 py-3.5 rounded-xl glass-card text-white hover:text-gold-400 text-xs font-semibold uppercase tracking-wider border border-gold-500/20 transition text-center">
+          Calculate Instant Price &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Hero Estate Showcase with Floating Badges -->
+    <div class="relative max-w-4xl mx-auto">
+      <!-- Main Estate Image Container -->
+      <div class="relative rounded-3xl overflow-hidden border border-gold-500/25 shadow-2xl group">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80" 
+             alt="Luxury Home Detailing" 
+             class="w-full h-[320px] sm:h-[480px] object-cover filter brightness-95 group-hover:scale-105 transition duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-noir-950/80 via-transparent to-transparent"></div>
+
+        <div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 flex items-center space-x-2 glass-pill px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-emeraldAccent-500/30">
+          <i data-lucide="check-circle" class="w-4 h-4 text-emeraldAccent-400"></i>
+          <span class="text-[11px] sm:text-xs font-semibold text-white tracking-wide">50-Point White-Glove Audit Passed</span>
+        </div>
+      </div>
+
+      <!-- Floating Badge 1: 4.96/5.0 Verified Reviews[span_0](start_span)[span_0](end_span) -->
+      <div class="absolute -top-4 -left-2 sm:-top-6 sm:-left-6 glass-card p-3 sm:p-4 rounded-2xl shadow-2xl border border-gold-500/40 flex items-center space-x-3 backdrop-blur-xl animate-float-slow">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 to-gold-300 flex items-center justify-center text-noir-950 shadow-md shadow-amber-400/20">
+          <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+        </div>
+        <div>
+          <div class="text-sm sm:text-base font-bold text-white font-sans flex items-center gap-1">
+            4.96 <span class="text-xs text-slate-400 font-normal">/ 5.0</span>
+          </div>
+          <p class="text-[10px] sm:text-[11px] text-slate-300 uppercase tracking-wider font-medium">Over 2,400+ Verified Reviews</p>
+        </div>
+      </div>
+
+      <!-- Floating Badge 2: 15,000+ Homes Cleaned in 2026[span_1](start_span)[span_1](end_span) -->
+      <div class="absolute -bottom-5 -right-2 sm:-bottom-6 sm:-right-6 glass-card p-3 sm:p-4 rounded-2xl shadow-2xl border border-emeraldAccent-500/30 flex items-center space-x-3 backdrop-blur-xl animate-float-reverse">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emeraldAccent-500/30 flex items-center justify-center text-emeraldAccent-400">
+          <i data-lucide="home" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="text-sm sm:text-base font-bold text-white font-sans">15,000+</div>
+          <p class="text-[10px] sm:text-[11px] text-slate-300 uppercase tracking-wider font-medium">Homes Cleaned in 2026</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verified Stats Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto mt-20 pt-10 border-t border-slate-800/80 text-center">
+      <div class="p-3">
+        <p class="text-2xl sm:text-3xl font-serif font-bold text-white"><span class="counter" data-target="99">0</span>%</p>
+        <p class="text-[11px] uppercase tracking-wider text-slate-400 mt-1">Germ & Bacteria Removal</p>
+      </div>
+      <div class="p-3">
+        <p class="text-2xl sm:text-3xl font-serif font-bold text-white"><span class="counter" data-target="15">0</span>k+</p>
+        <p class="text-[11px] uppercase tracking-wider text-slate-400 mt-1">Transformations</p>
+      </div>
+      <div class="p-3">
+        <p class="text-2xl sm:text-3xl font-serif font-bold text-white"><span class="counter" data-target="140">0</span>+</p>
+        <p class="text-[11px] uppercase tracking-wider text-slate-400 mt-1">Checklist Audit Items</p>
+      </div>
+      <div class="p-3">
+        <p class="text-2xl sm:text-3xl font-serif font-bold text-white"><span class="counter" data-target="100">0</span>%</p>
+        <p class="text-[11px] uppercase tracking-wider text-slate-400 mt-1">Eco-Safe Formulations</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Before / After Split Slider[span_2](start_span)[span_2](end_span) -->
+  <section id="comparison" class="py-16 sm:py-24 px-4 sm:px-8 max-w-4xl mx-auto relative z-10">
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full glass-pill mb-3">
+        <span class="text-[11px] uppercase tracking-widest text-emeraldAccent-400 font-bold">Uncompromising Standard</span>
+      </div>
+      <h2 class="text-2xl sm:text-4xl font-serif font-bold text-white">Interactive Transformation Showcase</h2>
+      <p class="text-xs sm:text-sm text-slate-400 mt-2">Slide back and forth to inspect post-sterilization fidelity</p>
+    </div>
+
+    <!-- Slider Frame -->
+    <div id="sliderFrame" class="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl border border-gold-500/25 select-none touch-none group cursor-ew-resize">
+      <!-- Clean "After" Image Layer -->
+      <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1600&q=80" 
+           alt="Clean Bathroom" 
+           class="absolute inset-0 w-full h-full object-cover pointer-events-none">
+      <div class="absolute top-4 right-4 bg-emerald-500/90 text-noir-950 font-bold px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs uppercase tracking-wider shadow-lg pointer-events-none">
+        After (SparklePro)
+      </div>
+
+      <!-- Dusty "Before" Image Layer (Clipped Container) -->
+      <div id="beforeContainer" class="absolute inset-y-0 left-0 overflow-hidden w-1/2 pointer-events-none">
+        <img id="beforeImg" src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1600&q=80" 
+             alt="Untidy Bathroom" 
+             class="absolute top-0 left-0 max-w-none h-full object-cover filter contrast-75 brightness-75">
+        <div class="absolute top-4 left-4 bg-noir-950/85 backdrop-blur-md text-slate-300 border border-slate-700 font-bold px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs uppercase tracking-wider">
+          Before
+        </div>
+      </div>
+
+      <!-- Interactive Draggable Divider -->
+      <div id="sliderHandle" class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-gold-400 flex items-center justify-center pointer-events-none">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-noir-950 border-2 border-gold-400 flex items-center justify-center text-gold-400 shadow-2xl">
+          <i data-lucide="chevrons-left-right" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direction Instructions -->
+    <div class="flex justify-between items-center text-[11px] sm:text-xs text-slate-400 mt-4 px-2">
+      <span class="flex items-center gap-1.5 font-medium"><i data-lucide="arrow-left" class="w-4 h-4 text-gold-400"></i> Drag left to view Before</span>
+      <span class="flex items-center gap-1.5 font-medium">Drag right for Pristine After <i data-lucide="arrow-right" class="w-4 h-4 text-emeraldAccent-400"></i></span>
+    </div>
+  </section>
+
+  <!-- Signature Services (Bento Grid) -->
+  <section id="services" class="py-20 px-4 sm:px-8 max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full glass-pill mb-3">
+        <span class="text-[11px] uppercase tracking-widest text-gold-400 font-bold">Comprehensive Offerings</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Curated Maintenance Solutions</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="glass-card rounded-2xl p-7 border border-gold-500/20 hover:border-gold-500/40 transition duration-300">
+        <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 mb-6">
+          <i data-lucide="gem" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-serif font-bold text-white mb-2">Architectural Stone Polish</h3>
+        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+          Micro-diamond restoration for Italian Carrara marble, granite countertops, and natural slate, restoring mirror sheen without surface abrasion.
+        </p>
+        <span class="text-xs font-semibold text-gold-400 flex items-center gap-1">Includes Nano-Sealant &rarr;</span>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="glass-card rounded-2xl p-7 border border-emeraldAccent-500/20 hover:border-emeraldAccent-500/40 transition duration-300">
+        <div class="w-12 h-12 rounded-xl bg-emeraldAccent-500/10 border border-emeraldAccent-500/30 flex items-center justify-center text-emeraldAccent-400 mb-6">
+          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-serif font-bold text-white mb-2">Clinical Sterilization</h3>
+        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+          HEPA air-scrubbing and dry vapor 180°C steam treatment targeting deep fabric fibers, ducted vents, and mattress cores.
+        </p>
+        <span class="text-xs font-semibold text-emeraldAccent-400 flex items-center gap-1">Zero Chemical Odor &rarr;</span>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="glass-card rounded-2xl p-7 border border-gold-500/20 hover:border-gold-500/40 transition duration-300">
+        <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 mb-6">
+          <i data-lucide="lamp-ceiling" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-serif font-bold text-white mb-2">Chandelier & Fine Fixtures</h3>
+        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+          Piece-by-piece disassembly and cleaning of Bohemian crystal chandeliers, gilded brass sconces, and delicate recessed lighting.
+        </p>
+        <span class="text-xs font-semibold text-gold-400 flex items-center gap-1">Insured Specialist Crew &rarr;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4-Step Elite Protocol -->
+  <section id="protocol" class="py-20 px-4 sm:px-8 max-w-5xl mx-auto relative z-10 border-t border-slate-800/80">
+    <div class="text-center mb-14">
+      <p class="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">The Methodology</p>
+      <h2 class="text-3xl font-serif font-bold text-white">The 4-Stage SparklePro Protocol</h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="glass-card p-6 rounded-2xl relative">
+        <span class="text-4xl font-serif font-bold text-gold-500/30 block mb-2">01</span>
+        <h4 class="text-base font-bold text-white mb-2">Aesthetic Audit</h4>
+        <p class="text-xs text-slate-400 leading-relaxed">Detailed material mapping of fine woods, fabrics, and stone before cleaning commences.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-2xl relative">
+        <span class="text-4xl font-serif font-bold text-gold-500/30 block mb-2">02</span>
+        <h4 class="text-base font-bold text-white mb-2">Deep Particulate Purge</h4>
+        <p class="text-xs text-slate-400 leading-relaxed">Dual HEPA filtration vacuuming extract unseen micro-pollutants and dander.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-2xl relative">
+        <span class="text-4xl font-serif font-bold text-gold-500/30 block mb-2">03</span>
+        <h4 class="text-base font-bold text-white mb-2">Thermal Sterilization</h4>
+        <p class="text-xs text-slate-400 leading-relaxed">High-temp dry vapor neutralizing bacteria without abrasive wet residue.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-2xl relative">
+        <span class="text-4xl font-serif font-bold text-gold-500/30 block mb-2">04</span>
+        <h4 class="text-base font-bold text-white mb-2">White-Glove Handover</h4>
+        <p class="text-xs text-slate-400 leading-relaxed">Final walk-through led by our Butler Supervisor with signed compliance report.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instant Price Estimate Calculator -->
+  <section id="calculator" class="py-20 px-4 sm:px-8 max-w-4xl mx-auto relative z-10">
+    <div class="glass-card rounded-3xl p-6 sm:p-12 border border-gold-500/30 shadow-2xl">
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full glass-pill mb-3">
+          <span class="text-[11px] uppercase tracking-widest text-emeraldAccent-400 font-bold">Transparent Pricing</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Instant Estimate Calculator</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">Configure your layout and receive a binding estimate immediately.</p>
+      </div>
+
+      <div class="space-y-8">
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">1. Select Property Classification</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button onclick="setResidence('1bhk', 1999, this)" class="residence-btn py-3 px-3 rounded-xl text-xs font-semibold text-center border border-gold-500 bg-gold-500/10 text-gold-300 transition">
+              1-2 BHK Suite
+            </button>
+            <button onclick="setResidence('3bhk', 3499, this)" class="residence-btn py-3 px-3 rounded-xl text-xs font-semibold text-center border border-gold-500/20 bg-noir-850 text-slate-300 hover:border-gold-500 transition">
+              3 BHK Penthouse
+            </button>
+            <button onclick="setResidence('villa', 5999, this)" class="residence-btn py-3 px-3 rounded-xl text-xs font-semibold text-center border border-gold-500/20 bg-noir-850 text-slate-300 hover:border-gold-500 transition">
+              Luxury Duplex/Villa
+            </button>
+            <button onclick="setResidence('mansion', 9999, this)" class="residence-btn py-3 px-3 rounded-xl text-xs font-semibold text-center border border-gold-500/20 bg-noir-850 text-slate-300 hover:border-gold-500 transition">
+              Grand Estate
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">2. Specialty Add-ons</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <label class="flex items-center space-x-3 p-3.5 rounded-xl bg-noir-850 border border-slate-800 cursor-pointer hover:border-gold-500/40">
+              <input type="checkbox" onchange="toggleAddon(999, this)" class="accent-gold-500 w-4 h-4 rounded">
+              <span class="text-xs text-slate-200">Italian Marble Polishing (+₹999)</span>
+            </label>
+            <label class="flex items-center space-x-3 p-3.5 rounded-xl bg-noir-850 border border-slate-800 cursor-pointer hover:border-gold-500/40">
+              <input type="checkbox" onchange="toggleAddon(1499, this)" class="accent-gold-500 w-4 h-4 rounded">
+              <span class="text-xs text-slate-200">Balcony Sanitization (+₹1,499)</span>
+            </label>
+            <label class="flex items-center space-x-3 p-3.5 rounded-xl bg-noir-850 border border-slate-800 cursor-pointer hover:border-gold-500/40">
+              <input type="checkbox" onchange="toggleAddon(699, this)" class="accent-gold-500 w-4 h-4 rounded">
+              <span class="text-xs text-slate-200">Aroma & Anti-Allergen (+₹699)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase text-slate-400 tracking-wider">Estimated Comprehensive Total</p>
+            <p class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">₹<span id="priceDisplay">1,999</span> <span class="text-xs font-sans font-normal text-slate-500">/ Session</span></p>
+          </div>
+          <button onclick="toggleModal(true)" class="gold-btn px-8 py-3.5 rounded-xl text-xs font-bold tracking-wider uppercase w-full sm:w-auto">
+            Book At This Rate
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Testimonials Section -->
+  <section class="py-16 px-4 sm:px-8 max-w-5xl mx-auto relative z-10">
+    <div class="text-center mb-10">
+      <p class="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">Client Endorsements</p>
+      <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Trusted by Discerning Homeowners</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="glass-card p-6 sm:p-8 rounded-2xl border border-gold-500/15">
+        <div class="flex text-amber-400 mb-4 space-x-1">
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-300 italic mb-6 leading-relaxed">
+          "SparklePro’s team handled our 6,000 sq ft penthouse with complete discretion. The marble flooring looks even better than when we first moved in."
+        </p>
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-500/30 flex items-center justify-center font-bold text-xs text-gold-300">
+            RK
+          </div>
+          <div>
+            <h5 class="text-xs font-bold text-white">Rohit Kapoor</h5>
+            <p class="text-[11px] text-slate-400">DLF The Camellias, Gurgaon</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card p-6 sm:p-8 rounded-2xl border border-gold-500/15">
+        <div class="flex text-amber-400 mb-4 space-x-1">
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-300 italic mb-6 leading-relaxed">
+          "Finally a service that understands delicate artwork and custom drapery. Not a single scratch or pungent chemical scent afterwards."
+        </p>
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-emeraldAccent-500/20 border border-emeraldAccent-500/30 flex items-center justify-center font-bold text-xs text-emeraldAccent-300">
+            AS
+          </div>
+          <div>
+            <h5 class="text-xs font-bold text-white">Ananya Singhal</h5>
+            <p class="text-[11px] text-slate-400">Juhu Tara Road, Mumbai</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section class="py-16 px-4 sm:px-8 max-w-3xl mx-auto relative z-10 border-t border-slate-800/80">
+    <div class="text-center mb-10">
+      <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Frequently Addressed Queries</h2>
+    </div>
+
+    <div class="space-y-3">
+      <div class="glass-card rounded-xl p-4 border border-gold-500/20">
+        <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center text-left text-sm font-semibold text-white">
+          <span>Are the cleaning crew members background checked?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform"></i>
+        </button>
+        <div class="faq-content hidden mt-3 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80 pt-2">
+          Yes, 100% of our staff undergoes thorough police verification, biometric onboarding, and mandatory NDAs for maximum client privacy.
+        </div>
+      </div>
+
+      <div class="glass-card rounded-xl p-4 border border-gold-500/20">
+        <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center text-left text-sm font-semibold text-white">
+          <span>Do you bring your own specialized equipment?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform"></i>
+        </button>
+        <div class="faq-content hidden mt-3 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80 pt-2">
+          We bring our own industrial German HEPA vacuums, dry vapor steam sanitizers, microfiber heads, and specialized pH-neutral solutions. You provide nothing.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIP Booking Modal -->
+  <div id="bookingModal" class="fixed inset-0 bg-noir-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center px-4">
+    <div class="glass-card max-w-md w-full p-6 sm:p-8 rounded-3xl border border-gold-500/40 relative shadow-2xl">
+      <button onclick="toggleModal(false)" class="absolute top-5 right-5 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 class="text-2xl font-serif font-bold text-white mb-1">Confirm Service Booking</h3>
+      <p class="text-xs text-slate-400 mb-6">Our priority concierge supervisor will contact you in under 15 minutes.</p>
+
+      <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs uppercase text-slate-400 mb-1">Full Name</label>
+          <input type="text" required placeholder="Mr. / Ms. Full Name" class="w-full bg-noir-850 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500">
+        </div>
+        <div>
+          <label class="block text-xs uppercase text-slate-400 mb-1">Contact Phone</label>
+          <input type="tel" required placeholder="+91 98765 43210" class="w-full bg-noir-850 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500">
+        </div>
+        <div>
+          <label class="block text-xs uppercase text-slate-400 mb-1">Preferred Slot</label>
+          <input type="date" required class="w-full bg-noir-850 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500">
+        </div>
+        <button type="submit" class="gold-btn w-full py-3 rounded-lg text-xs uppercase font-bold tracking-wider mt-4">
+          Reserve Priority Slot
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="py-10 text-center text-slate-500 text-xs border-t border-slate-900 px-4">
+    &copy; 2026 SparklePro Concierge. All Rights Reserved. Luxury Housekeeping Protocols.
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    lucide.createIcons();
+
+    // 1. Smart Scroll Navbar (Mobile & Desktop Friendly)
+    let lastScrollY = window.scrollY;
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > 90 && currentScrollY > lastScrollY) {
+        navbar.classList.add('nav-hidden');
+      } else {
+        navbar.classList.remove('nav-hidden');
+      }
+      lastScrollY = currentScrollY;
+    }, { passive: true });
+
+    // 2. Responsive Before/After Slider (Bug Free Touch & Mouse Drag)
+    const frame = document.getElementById('sliderFrame');
+    const container = document.getElementById('beforeContainer');
+    const handle = document.getElementById('sliderHandle');
+    const beforeImg = document.getElementById('beforeImg');
+    let isDragging = false;
+
+    function syncImageWidth() {
+      if (frame && beforeImg) {
+        beforeImg.style.width = `${frame.offsetWidth}px`;
+      }
+    }
+    window.addEventListener('resize', syncImageWidth);
+    window.addEventListener('load', syncImageWidth);
+
+    function updateSlider(clientX) {
+      const rect = frame.getBoundingClientRect();
+      let pos = (clientX - rect.left) / rect.width;
+      pos = Math.max(0, Math.min(1, pos));
+      container.style.width = `${pos * 100}%`;
+      handle.style.left = `${pos * 100}%`;
+    }
+
+    frame.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      frame.setPointerCapture(e.pointerId);
+      updateSlider(e.clientX);
+    });
+
+    frame.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      updateSlider(e.clientX);
+    });
+
+    const stopDragging = (e) => {
+      if (isDragging) {
+        isDragging = false;
+        try { frame.releasePointerCapture(e.pointerId); } catch(err){}
+      }
+    };
+    frame.addEventListener('pointerup', stopDragging);
+    frame.addEventListener('pointercancel', stopDragging);
+
+    // 3. Live Price Calculation Logic
+    let basePrice = 1999;
+    let addonsTotal = 0;
+
+    function updatePrice() {
+      const total = basePrice + addonsTotal;
+      document.getElementById('priceDisplay').innerText = total.toLocaleString('en-IN');
+    }
+
+    function setResidence(type, price, btn) {
+      basePrice = price;
+      document.querySelectorAll('.residence-btn').forEach(b => {
+        b.classList.remove('border-gold-500', 'bg-gold-500/10', 'text-gold-300');
+        b.classList.add('bg-noir-850', 'text-slate-300');
+      });
+      btn.classList.add('border-gold-500', 'bg-gold-500/10', 'text-gold-300');
+      btn.classList.remove('bg-noir-850', 'text-slate-300');
+      updatePrice();
+    }
+
+    function toggleAddon(cost, checkbox) {
+      if (checkbox.checked) {
+        addonsTotal += cost;
+      } else {
+        addonsTotal -= cost;
+      }
+      updatePrice();
+    }
+
+    // 4. Modal
+    function toggleModal(show) {
+      const modal = document.getElementById('bookingModal');
+      modal.classList.toggle('hidden', !show);
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      alert('Thank you! Your priority slot request has been recorded. Our concierge manager will call you shortly.');
+      toggleModal(false);
+    }
+
+    // 5. FAQ Accordion Toggle
+    function toggleFaq(btn) {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('[data-lucide="chevron-down"]');
+      content.classList.toggle('hidden');
+      if (icon) {
+        icon.classList.toggle('rotate-180');
+      }
+    }
+
+    // 6. GSAP Number Counting Animation
+    gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll('.counter').forEach(counter => {
+      const target = +counter.getAttribute('data-target');
+      gsap.to(counter, {
+        innerHTML: target,
+        duration: 1.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: counter,
+          start: 'top 85%'
+        },
+        snap: { innerHTML: 1 }
+      });
+    });
+  </script>
+</body>
+</html>
